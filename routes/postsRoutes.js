@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req,res) => {
   const post =  req.body;
-  if (!post.title || !post.content) {
+  if (!post.title || !post.contents) {
     res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
   } else {
     postDB.insert(post)
@@ -84,11 +84,11 @@ router.put('/:id', (req, res) => {
     .then(foundPost => {
       if (!foundPost) {
         res.status(404).json({ message: "The post with the specified ID does not exist."});
-      } else if (!post.title || !post.content) {
+      } else if (!post.title || !post.contents) {
         res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
       } else {
         postDB.update(id, post)
-          .then(updatedRecords => res.status(200).json({...post, ...id}))
+          .then(updatedRecords => res.status(200).json({...post, id: id}))
           .catch(err => res.status(500).json({ error: "The post information could not be modified." }));
       }
     })
